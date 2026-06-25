@@ -17,7 +17,7 @@ class NavegacionRutas extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false, 
 
-      initialRoute: "/pagina3",
+      initialRoute: "/",
 
       routes: {
         "/": (context) => const Home(),
