@@ -5,7 +5,10 @@ class DetalleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final peli = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    final peli = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    final listaGeneros = peli["genre"] as List<dynamic>? ?? [];
+    final textoGeneros = listaGeneros.join(", ");
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -13,7 +16,7 @@ class DetalleScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: Text(peli["titulo"]!, style: const TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
+        title: Text(peli["title"]!, style: const TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -24,7 +27,7 @@ class DetalleScreen extends StatelessWidget {
               height: 280,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(peli["imagen"]!),
+                  image: NetworkImage(peli["image_url"]!),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -35,7 +38,7 @@ class DetalleScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    peli["titulo"]!,
+                    peli["title"]!,
                     style: const TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
@@ -43,11 +46,11 @@ class DetalleScreen extends StatelessWidget {
                     children: [
                       const Icon(Icons.star, color: Colors.amber, size: 20),
                       const SizedBox(width: 4),
-                      Text(peli["puntuacion"]!, style: const TextStyle(color: Colors.amber, fontSize: 16, fontWeight: FontWeight.bold)),
+                      Text(peli["stars"]!.toString(), style: const TextStyle(color: Colors.amber, fontSize: 16, fontWeight: FontWeight.bold)),
                       const SizedBox(width: 20),
                       const Icon(Icons.calendar_today, color: Colors.white54, size: 16),
                       const SizedBox(width: 4),
-                      Text(peli["anio"]!, style: const TextStyle(color: Colors.white54, fontSize: 15)),
+                      Text(peli["year"]!.toString(), style: const TextStyle(color: Colors.white54, fontSize: 15)),
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -58,12 +61,12 @@ class DetalleScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.amber, width: 1),
                     ),
-                    child: Text(peli["genero"]!, style: const TextStyle(color: Colors.amber, fontSize: 13)),
+                    child: Text(peli["genre"]!, style: const TextStyle(color: Colors.amber, fontSize: 13)),
                   ),
                   const SizedBox(height: 20),
                   const Text("Sinopsis", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  Text(peli["descripcion"]!, style: const TextStyle(color: Colors.white70, fontSize: 15, height: 1.6)),
+                  Text(peli["description"]!, style: const TextStyle(color: Colors.white70, fontSize: 15, height: 1.6)),
                 ],
               ),
             ),
