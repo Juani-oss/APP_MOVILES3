@@ -1,4 +1,5 @@
 import 'package:app_moviles3/Screens/CarteleraScreen.dart';
+import 'package:app_moviles3/Screens/DetalleScreen.dart';
 import 'package:app_moviles3/Screens/HomeScreen.dart';
 import 'package:app_moviles3/Screens/LoginScreen.dart';
 import 'package:app_moviles3/Screens/RegistroScreen.dart';
@@ -23,6 +24,7 @@ class NavegacionRutas extends StatelessWidget {
         "/pagina1": (context) => const Loginscreen(),
         "/pagina2": (context) => const Registroscreen(),
         "/pagina3": (context) => const CarteleraScreen(),
+        "/detalle":(context) => const DetalleScreen()
       },
     );
   }

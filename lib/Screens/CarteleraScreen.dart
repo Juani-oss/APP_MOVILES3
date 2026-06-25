@@ -7,12 +7,54 @@ class CarteleraScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Lista simulada de películas (puedes cambiar los nombres y assets/urls después)
     final List<Map<String, String>> peliculas = [
-      {"titulo": "Batman", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Batman"},
-      {"titulo": "Inception", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Inception"},
-      {"titulo": "Interstellar", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Interstellar"},
-      {"titulo": "Dune", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Dune"},
-      {"titulo": "Avatar", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Avatar"},
-      {"titulo": "Avengers", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Avengers"},
+      {
+        "titulo": "Batman",
+        "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Batman",
+        "descripcion": "Bruce Wayne se convierte en el vigilante nocturno de Gotham para enfrentarse al Joker y proteger a su ciudad de la corrupción y el caos.",
+        "anio": "2022",
+        "puntuacion": "7.8",
+        "genero": "Acción / Crimen",
+      },
+      {
+        "titulo": "Inception",
+        "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Inception",
+        "descripcion": "Un ladrón experto en robar secretos del subconsciente recibe la misión inversa: plantar una idea en la mente de alguien.",
+        "anio": "2010",
+        "puntuacion": "8.8",
+        "genero": "Ciencia ficción / Thriller",
+      },
+      {
+        "titulo": "Interstellar",
+        "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Interstellar",
+        "descripcion": "Un grupo de exploradores viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad mientras la Tierra agoniza.",
+        "anio": "2014",
+        "puntuacion": "8.6",
+        "genero": "Ciencia ficción / Drama",
+      },
+      {
+        "titulo": "Dune",
+        "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Dune",
+        "descripcion": "Paul Atreides lidera a su pueblo en la batalla por el planeta desértico más importante del universo, fuente de la especia más valiosa.",
+        "anio": "2021",
+        "puntuacion": "8.0",
+        "genero": "Ciencia ficción / Aventura",
+      },
+      {
+        "titulo": "Avatar",
+        "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Avatar",
+        "descripcion": "Un marine parapléjico viaja al planeta Pandora donde se ve atrapado en un conflicto entre colonizadores humanos y los Na'vi, los habitantes nativos.",
+        "anio": "2009",
+        "puntuacion": "7.9",
+        "genero": "Ciencia ficción / Aventura",
+      },
+      {
+        "titulo": "Avengers",
+        "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Avengers",
+        "descripcion": "Los héroes más poderosos de la Tierra se unen para detener a Thanos, quien busca reunir las Gemas del Infinito para borrar la mitad del universo.",
+        "anio": "2018",
+        "puntuacion": "8.4",
+        "genero": "Acción / Superhéroes",
+      },
     ];
 
     return Scaffold(
@@ -81,14 +123,19 @@ class CarteleraScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white10,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.white12, width: 1),
-                            image: DecorationImage(
-                              image: NetworkImage(peli["imagen"]!),
-                              fit: BoxFit.cover,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/detalle", arguments: peli);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white10,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.white12, width: 1),
+                              image: DecorationImage(
+                                image: NetworkImage(peli["imagen"]!),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
