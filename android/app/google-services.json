@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "5104112793",
+    "firebase_url": "https://appmoviliii-default-rtdb.firebaseio.com",
+    "project_id": "appmoviliii",
+    "storage_bucket": "appmoviliii.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5104112793:android:9d506d1a46c7c237bcd408",
+        "android_client_info": {
+          "package_name": "com.example.app_11"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALuntr8VTlshRKJIz7fWF1XB5aQTGI06k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5104112793:android:016cfcda8541281ebcd408",
+        "android_client_info": {
+          "package_name": "com.example.app_moviles3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALuntr8VTlshRKJIz7fWF1XB5aQTGI06k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

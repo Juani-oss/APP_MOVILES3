@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -37,7 +36,13 @@ class CarteleraScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {},  
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.amber),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+            },
           ),
         ],
       ),
