@@ -50,6 +50,7 @@ class NavegacionRutas extends StatelessWidget {
             "/pagina1": (context) => const Loginscreen(),
             "/pagina2": (context) => const Registroscreen(),
             "/pagina3": (context) => const CarteleraScreen(),
+            "/detalle": (context) => const DetalleScreen(),
           },
         );
       },
