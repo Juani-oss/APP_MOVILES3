@@ -1,4 +1,5 @@
 import 'package:app_moviles3/Screens/CarteleraScreen.dart';
+import 'package:app_moviles3/Screens/DetalleScreen.dart';
 import 'package:app_moviles3/Screens/HomeScreen.dart';
 import 'package:app_moviles3/Screens/LoginScreen.dart';
 import 'package:app_moviles3/Screens/RegistroScreen.dart';

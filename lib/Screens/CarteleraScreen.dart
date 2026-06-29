@@ -1,28 +1,36 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+
 class CarteleraScreen extends StatelessWidget {
   const CarteleraScreen({super.key});
 
+  // Funcion para leer la API de peliculas
+  Future<List> leerUrl(String url) async {
+    try {
+      final respuesta = await http.get(Uri.parse(url));
+      if (respuesta.statusCode == 200) {
+        return json.decode(respuesta.body);
+      } else {
+        throw Exception("Error al cargar películas");
+      }
+    } catch (e) {
+      return [];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Lista simulada de películas (puedes cambiar los nombres y assets/urls después)
-    final List<Map<String, String>> peliculas = [
-      {"titulo": "Batman", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Batman"},
-      {"titulo": "Inception", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Inception"},
-      {"titulo": "Interstellar", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Interstellar"},
-      {"titulo": "Dune", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Dune"},
-      {"titulo": "Avatar", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Avatar"},
-      {"titulo": "Avengers", "imagen": "https://via.placeholder.com/150x220/000000/FFFFFF?text=Avengers"},
-    ];
+
+    const String urlApi = "https://devsapihub.com/api-movies";
 
     return Scaffold(
-      backgroundColor: Colors.black, // Mantenemos el fondo oscuro de tu app
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white10,
         elevation: 0,
-        title: const Text(
-          "CINE STAR", 
+        title: const Text("CINE STAR",
           style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 24),
         ),
         actions: [
@@ -38,87 +46,115 @@ class CarteleraScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              // --- SECCIÓN: PELÍCULA DESTACADA (BANNER) ---
-              const Text(
-                "Destacada de la semana",
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12),
-              Container(
-                width: double.infinity,
-                height: 180,
-                decoration: BoxDecoration(
-                  color: Colors.white10,
-                  borderRadius: BorderRadius.circular(12),
-                  // Nota: Cuando tengas una imagen real en tus assets, usa AssetImage o NetworkImage
-                  image: const DecorationImage(
-                    image: NetworkImage("https://via.placeholder.com/400x180/222222/FFFFFF?text=Banner+Película"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 25),
 
-              // --- SECCIÓN: EN CARTELERA (GRID) ---
-              const Text(
-                "En Cartelera",
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+      body: FutureBuilder(future: leerUrl(urlApi), builder: (context, snapshot) {
+          // Mientras carga mostramos el circulo de progreso
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.amber),
+            );
+          }
+
+          // Si hay error o no hay datos, mostramos un mensaje
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text("No se pudo cargar la informacion.",
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
-              const SizedBox(height: 12),
-              GridView.builder(
-                shrinkWrap: true, // Permite que se use dentro de SingleChildScrollView
-                physics: const NeverScrollableScrollPhysics(), // Evita conflictos de scroll
-                itemCount: peliculas.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Dos columnas de películas
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 0.7, // Proporción ideal para pósters de cine
-                ),
-                itemBuilder: (context, index) {
-                  final peli = peliculas[index];
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white10,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.white12, width: 1),
-                            image: DecorationImage(
-                              image: NetworkImage(peli["imagen"]!),
-                              fit: BoxFit.cover,
+            );
+          }
+
+          final peliculasApi = snapshot.data!;
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 15),
+                  
+    //Pelicula destacada
+                  const Text(
+                    "Destacada de la semana",
+                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.white10,
+                      borderRadius: BorderRadius.circular(12),
+                      image: DecorationImage(
+                        image: NetworkImage(peliculasApi[0]['image_url']),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+
+    // Cartelera
+                  const Text(
+                    "En Cartelera",
+                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 12),
+                  
+                  // El GridView ahora usa los datos de la API
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: peliculasApi.length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // Dos columnas
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 0.6, // Proporción del póster
+                    ),
+                    itemBuilder: (context, index) {
+                      final peli = peliculasApi[index];
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, "/detalle", arguments: peli);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white10,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.white12, width: 1),
+                                  image: DecorationImage(
+                                    image: NetworkImage(peli["image_url"]),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        peli["titulo"]!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  );
-                },
+                          const SizedBox(height: 8),
+                          Text(
+                            peli["title"] ?? "Sin título",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14,),),
+
+                          Text("${peli["year"]} • ⭐ ${peli["stars"]}",
+                            style: const TextStyle(color: Colors.white70, fontSize: 12,)),
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
